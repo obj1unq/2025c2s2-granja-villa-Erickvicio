@@ -46,7 +46,7 @@ object personaje {
 	method cosecharPlanta() {
 		self.validarCosecha()
 		self.plantaEncima().first().esCocechada()
-		console.println(listaDeCocechas.size())
+		console.println(listaDeCosechas.size())
 	}
 
 	method validarCosecha() {
@@ -56,30 +56,33 @@ object personaje {
 	}
 
 	method agregarParaVentas(unCultivo) {
-		listaDeCocechas.add(unCultivo)
+		listaDeCosechas.add(unCultivo)
 	}
 
-	var listaDeCocechas = []
+	var listaDeCosechas = []
 	var  dinero = 0
 
 	method venderCosecha() {
 		self.validarVenta()
-		dinero += listaDeCocechas.sum({cocecha => cocecha.valorDeVenta()})
-		listaDeCocechas.clear()
+		dinero += listaDeCosechas.sum({cosecha => cosecha.valorDeVenta()})
+		listaDeCosechas.clear()
 	}
 
 	method validarVenta() {
-		if(listaDeCocechas.isEmpty()){
+		if(listaDeCosechas.isEmpty()){
 			self.error("No hay nada que vender")
 		}
 	}
 
-	method listaDeCocechas() {return listaDeCocechas}
+	method listaDeCosechas() {return listaDeCosechas}
 	method dinero() {return dinero}
 
 	method colocarAspersor() {
 		self.validarColocarAspersor()
-		game.addVisual(new Aspersor(position = self.position()))
+		var unAspersor = new Aspersor(position = self.position())
+		listaDeAspersores.add(unAspersor)
+		game.addVisual(unAspersor)
+		console.println(listaDeAspersores.size())
 	}
 
 	method validarColocarAspersor() {
@@ -87,6 +90,8 @@ object personaje {
 			self.error("No se puede colocar un aspersor aqui")
 		}
 	}
+
+	const property listaDeAspersores = []
 
 
 }

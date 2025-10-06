@@ -18,12 +18,16 @@ program farmville {
 	keyboard.v().onPressDo({personaje.venderCosecha()})
 	keyboard.space().onPressDo(
 		{game.say(personaje, "Tengo "+ personaje.dinero()+ " monedas, y " +
-		personaje.listaDeCocechas().size()+ " plantas para vender")})
+		personaje.listaDeCosechas().size()+ " plantas para vender")})
 	keyboard.a().onPressDo({personaje.colocarAspersor()})
 
 	//  VISUALES
  	game.addVisualCharacter(personaje)
  	game.addVisual(new Maiz()) // Se agrega a modo de prueba
+
+	// EVENTOS
+	game.onTick(1000, "Aspersores regando plantas",
+	{personaje.listaDeAspersores().forEach({asp => asp.regarTodo()})})
  	
  	//  COMIENZA
 	game.start()

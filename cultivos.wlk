@@ -1,4 +1,5 @@
 import personaje.*
+import extras.*
 import wollok.game.*
 
 class Maiz {
@@ -100,7 +101,30 @@ class Aspersor {
 		return "aspersor.png"
 	}
 
-	method regar() {
-		
+	method regar(unaDireccion) {
+		self.validarRegar(self.cultivoEn(unaDireccion))
+		self.cultivoEn(unaDireccion).first().esRegada()
 	}
+
+	method validarRegar(unaDireccion) {
+		if(self.cultivoEn(unaDireccion).isEmpty()){
+			self.error("No hay nada que regar en tu ano eri jijijijijijiji")
+		}
+	}
+
+	method cultivoEn(unaDireccion) {
+		return game.getObjectsIn(unaDireccion.siguiente(position))
+	}
+
+	method regarTodo() {
+		self.regar(norte)
+		self.regar(sur)
+		self.regar(este)
+		self.regar(oeste)
+		self.regar(norEste)
+		self.regar(norOeste)
+		self.regar(surEste)
+		self.regar(surOeste)
+	}
+
 }
