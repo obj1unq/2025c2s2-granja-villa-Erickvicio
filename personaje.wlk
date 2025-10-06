@@ -71,6 +71,7 @@ object personaje {
 		dinero += cantidadAVender
 		self.entidadEncima().first().agregarAMercaderia(listaDeCosechas)
 		self.entidadEncima().first().comprar(cantidadAVender)
+		self.entidadEncima().first().informacion()
 
 		listaDeCosechas.clear()
 	}

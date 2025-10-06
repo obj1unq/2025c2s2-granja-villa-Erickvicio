@@ -1,0 +1,103 @@
+import personaje.*
+import game.*
+import extras.*
+import cultivos.*
+
+
+
+
+describe "Sembrar" {
+    test "Sembrar Maiz" {
+    //assert.equals(personaje.entidadEncima().first(), new Maiz())
+        personaje.sembrarSemillaDeMaiz()
+        assert.that(personaje.entidadEncima().first().kindName() == "a Maiz")
+    }
+
+    test "Sembrar Trigo" {
+        personaje.sembrarSemillaDeTrigo()
+        assert.that(personaje.entidadEncima().first().kindName() == "a Trigo")
+    }
+
+    test "Sembrar Tomaco" {
+        personaje.sembrarSemillaDeTomaco()
+        assert.that(personaje.entidadEncima().first().kindName() == "a Tomaco")
+    }
+
+    test "Sembrar dos cosas en la misma posicion" {
+        personaje.sembrarSemillaDeMaiz()
+        assert.throwsException({ personaje.sembrarSemillaDeMaiz() })
+    }
+}
+
+describe "Regar" {
+    test "Regar maiz" {
+        personaje.sembrarSemillaDeMaiz()
+        personaje.regarPlanta()
+        assert.that(personaje.entidadEncima().first().image() == "corn_adult.png")
+        personaje.regarPlanta()
+        assert.that(personaje.entidadEncima().first().image() == "corn_adult.png")
+    }
+
+    test "Regar trigo" {
+        personaje.sembrarSemillaDeTrigo()
+        personaje.regarPlanta()
+        assert.that(personaje.entidadEncima().first().image() == "wheat_1.png")
+        personaje.regarPlanta()
+        assert.that(personaje.entidadEncima().first().image() == "wheat_2.png")
+        personaje.regarPlanta()
+        assert.that(personaje.entidadEncima().first().image() == "wheat_3.png")
+        personaje.regarPlanta()
+        assert.that(personaje.entidadEncima().first().image() == "wheat_0.png")
+    }
+
+    test "Regar tomaco" {
+        personaje.sembrarSemillaDeTomaco()
+        personaje.regarPlanta()
+        assert.that(personaje.entidadEncima().isEmpty())
+    }
+
+    test "Regar sin cultivos" {
+        assert.throwsException({ personaje.regarPlanta() })
+    }
+}
+
+describe "Cosechar" {
+    test "Cosechar maiz " {
+        personaje.sembrarSemillaDeMaiz()
+        assert.throwsException({ personaje.cosecharPlanta() })
+        personaje.regarPlanta()
+        personaje.cosecharPlanta()
+        assert.equals(personaje.listaDeCosechas().first().kindName(), "a Maiz")
+    }
+    test "Cosechar trigo " {
+        // Trigo etapa 2
+        personaje.sembrarSemillaDeTrigo()
+        assert.throwsException({ personaje.cosecharPlanta() }) // Estapa 0
+        personaje.regarPlanta()
+        assert.throwsException({ personaje.cosecharPlanta() }) // Estapa 1
+        personaje.regarPlanta()
+        personaje.cosecharPlanta()
+
+        assert.equals(personaje.listaDeCosechas().first().kindName(), "a Trigo")
+
+        //Trigo estapa 3
+        personaje.sembrarSemillaDeTrigo()
+        personaje.regarPlanta()
+        personaje.regarPlanta()
+        personaje.regarPlanta()
+        personaje.cosecharPlanta()
+
+        assert.equals(personaje.listaDeCosechas().first().kindName(), "a Trigo")
+    }
+    test "Cosechar tomaco" {
+        personaje.sembrarSemillaDeTomaco()
+        personaje.cosecharPlanta()
+
+        assert.equals(personaje.listaDeCosechas().first().kindName(), "a Tomaco")
+    }
+    test "Cosechar con ninguna planta encima" {
+        assert.throwsException({ personaje.cosecharPlanta() })
+    }
+
+    
+}
