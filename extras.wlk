@@ -1,5 +1,6 @@
-//dame un grrrr un k un grrrr hola eri (corazon con las manos)
+import wollok.game.*
 
+//Direcciones
 object norte {
     method siguiente(unaPosicion) {
         return unaPosicion.up(1)
@@ -22,7 +23,6 @@ object oeste {
     }
 }
 
-//TESTING
 object norOeste {
     method siguiente(unaPosicion) {
         return norte.siguiente(oeste.siguiente(unaPosicion))
@@ -42,5 +42,35 @@ object surOeste {
 object surEste {
     method siguiente(unaPosicion) {
         return sur.siguiente(este.siguiente(unaPosicion))
+    }
+}
+
+//Mercados
+
+class Mercado {
+    var property image = "market.png"
+    var property position = game.center() 
+
+    var property dinero = 200
+    const property mercaderia = []
+
+    method agregarAMercaderia(listaDeElementos) {
+        mercaderia.addAll(listaDeElementos)
+    }
+
+    method comprar(cantidad) {
+        self.validarCompraDe(cantidad)
+        dinero -= cantidad
+    }
+
+    method validarCompraDe(cantidad) {
+        if(cantidad > dinero){
+            self.error("No contamos con suficiente capital :C")
+        }
+    }
+
+    method informacion() {
+        game.say(self, "Tenemos "+ mercaderia +" y disponemos de "
+		+ dinero +" para la compra")
     }
 }

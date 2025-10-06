@@ -20,10 +20,13 @@ program farmville {
 	keyboard.v().onPressDo({personaje.venderCosecha()})
 	keyboard.space().onPressDo(
 		{game.say(personaje, "Tengo "+ personaje.dinero()+ " monedas, y " +
-		personaje.listaDeCosechas().size()+ " plantas para vender")})
+		personaje.listaDeCosechas().size()+ " plantas para vender")}
+		)
 	keyboard.a().onPressDo({personaje.colocarAspersor()})
 
 	//  VISUALES
+	game.addVisual(new Mercado(position = game.at(9, 0), dinero = 0))
+	game.addVisual(new Mercado(position = game.at(9, 9), dinero = 1000))
  	game.addVisualCharacter(personaje)
  	game.addVisual(new Maiz()) // Se agrega a modo de prueba
 

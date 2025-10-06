@@ -21,12 +21,12 @@ object personaje {
 	}
 
 	method validarSembrado() {
-		if(not self.plantaEncima().isEmpty()){
+		if(not self.entidadEncima().isEmpty()){
 			self.error("Este espacio esta ocupado")
 		}
 	}
 
-	method plantaEncima() {
+	method entidadEncima() {
 		var cultivo = game.getObjectsIn(position)
 		cultivo.remove(self)
 		return cultivo
@@ -34,23 +34,23 @@ object personaje {
 
 	method regarPlanta() {
 		self.validarRegado()
-		self.plantaEncima().first().esRegada()
+		self.entidadEncima().first().esRegada()
 	}
 
 	method validarRegado() {
-		if(self.plantaEncima().isEmpty()){
+		if(self.entidadEncima().isEmpty()){
 			self.error("No hay ninguna planta que regar aqui")
 		}
 	}
 
 	method cosecharPlanta() {
 		self.validarCosecha()
-		self.plantaEncima().first().esCocechada()
+		self.entidadEncima().first().esCocechada()
 		console.println(listaDeCosechas.size())
 	}
 
 	method validarCosecha() {
-		if(self.plantaEncima().isEmpty()){
+		if(self.entidadEncima().isEmpty()){
 			self.error("No hay ninguna planta que cosechar aqui")
 		}
 	}
@@ -59,18 +59,31 @@ object personaje {
 		listaDeCosechas.add(unCultivo)
 	}
 
-	var listaDeCosechas = []
+	var property listaDeCosechas = []
 	var  dinero = 0
 
 	method venderCosecha() {
+		var cantidadAVender = listaDeCosechas.sum({cosecha => cosecha.valorDeVenta()})
+
 		self.validarVenta()
-		dinero += listaDeCosechas.sum({cosecha => cosecha.valorDeVenta()})
+		self.entidadEncima().first().validarCompraDe(cantidadAVender)
+
+		dinero += cantidadAVender
+		self.entidadEncima().first().agregarAMercaderia(listaDeCosechas)
+		self.entidadEncima().first().comprar(cantidadAVender)
+
 		listaDeCosechas.clear()
 	}
 
 	method validarVenta() {
 		if(listaDeCosechas.isEmpty()){
 			self.error("No hay nada que vender")
+		}
+
+		if(self.entidadEncima().isEmpty()){
+			self.error("No hay un mercado")
+		}else if(self.entidadEncima().first().image() != "market.png"){
+			self.error("No coincide con el nombre de la clase")
 		}
 	}
 
@@ -86,12 +99,10 @@ object personaje {
 	}
 
 	method validarColocarAspersor() {
-		if(not self.plantaEncima().isEmpty()){
+		if(not self.entidadEncima().isEmpty()){
 			self.error("No se puede colocar un aspersor aqui")
 		}
 	}
 
 	const property listaDeAspersores = []
-
-
 }
