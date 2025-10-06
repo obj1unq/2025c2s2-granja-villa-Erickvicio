@@ -9,6 +9,12 @@ program farmville {
 	game.width(10)
 	game.ground("ground.png")
 
+	//INPUTS
+	keyboard.m().onPressDo({personaje.sembrarSemillaDeMaiz()})
+	keyboard.t().onPressDo({personaje.sembrarSemillaDeTrigo()})
+	keyboard.o().onPressDo({personaje.sembrarSemillaDeTomaco()})
+	keyboard.r().onPressDo({personaje.regarPlanta()})
+
 	//  VISUALES
  	game.addVisualCharacter(personaje)
  	game.addVisual(new Maiz()) // Se agrega a modo de prueba
