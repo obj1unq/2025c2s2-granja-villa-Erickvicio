@@ -43,4 +43,37 @@ object personaje {
 		}
 	}
 
+	method cosecharPlanta() {
+		self.validarCosecha()
+		self.plantaEncima().first().esCocechada()
+		console.println(listaDeCocechas.size())
+	}
+
+	method validarCosecha() {
+		if(self.plantaEncima().isEmpty()){
+			self.error("No hay ninguna planta que cosechar aqui")
+		}
+	}
+
+	method agregarParaVentas(unCultivo) {
+		listaDeCocechas.add(unCultivo)
+	}
+
+	var listaDeCocechas = []
+	var  dinero = 0
+
+	method venderCosecha() {
+		self.validarVenta()
+		dinero += listaDeCocechas.sum({cocecha => cocecha.valorDeVenta()})
+		listaDeCocechas.clear()
+	}
+
+	method validarVenta() {
+		if(listaDeCocechas.isEmpty()){
+			self.error("No hay nada que vender")
+		}
+	}
+
+	method listaDeCocechas() {return listaDeCocechas}
+	method dinero() {return dinero}
 }

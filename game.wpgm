@@ -14,6 +14,11 @@ program farmville {
 	keyboard.t().onPressDo({personaje.sembrarSemillaDeTrigo()})
 	keyboard.o().onPressDo({personaje.sembrarSemillaDeTomaco()})
 	keyboard.r().onPressDo({personaje.regarPlanta()})
+	keyboard.c().onPressDo({personaje.cosecharPlanta()})
+	keyboard.v().onPressDo({personaje.venderCosecha()})
+	keyboard.space().onPressDo(
+		{game.say(personaje, "Tengo "+ personaje.dinero()+ " monedas, y " +
+		personaje.listaDeCocechas().size()+ " plantas para vender")})
 
 	//  VISUALES
  	game.addVisualCharacter(personaje)
