@@ -96,19 +96,19 @@ class Tomaco {
 
 class Aspersor {
 	var property position = game.at(1, 1)
-	
+	const dir = [norte, sur, este, oeste, norEste, norOeste,
+	surEste, surOeste]
+
+
 	method image() {
 		return "aspersor.png"
 	}
 
 	method regar(unaDireccion) {
-		self.validarRegar(self.cultivoEn(unaDireccion))
-		self.cultivoEn(unaDireccion).first().esRegada()
-	}
-
-	method validarRegar(unaDireccion) {
-		if(self.cultivoEn(unaDireccion).isEmpty()){
-			self.error("No hay nada que regar en tu ano eri jijijijijijiji")
+		const cultivo = self.cultivoEn(unaDireccion)
+		cultivo.remove(personaje)
+		if(not cultivo.isEmpty()){
+			cultivo.first().esRegada()
 		}
 	}
 
@@ -117,14 +117,7 @@ class Aspersor {
 	}
 
 	method regarTodo() {
-		self.regar(norte)
-		self.regar(sur)
-		self.regar(este)
-		self.regar(oeste)
-		self.regar(norEste)
-		self.regar(norOeste)
-		self.regar(surEste)
-		self.regar(surOeste)
+		dir.forEach({unaDir => self.regar(unaDir)})
 	}
 
 }

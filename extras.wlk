@@ -10,14 +10,9 @@ object sur {
         return unaPosicion.down(1)
     }
 }
-object izquierda {
-    method siguiente(unaPosicion) {
-        return unaPosicion.left(1)
-    }
-}
 object este {
     method siguiente(unaPosicion) {
-        return unaPosicion.right(1)
+        return unaPosicion.left(1)
     }
 }
 
