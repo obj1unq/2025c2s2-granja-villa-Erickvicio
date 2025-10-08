@@ -19,6 +19,7 @@ program farmville {
 	keyboard.space().onPressDo(
 		{game.say(personaje, "Tengo "+ personaje.dinero()+ " monedas, y " +
 		personaje.listaDeCocechas().size()+ " plantas para vender")})
+	keyboard.a().onPressDo({personaje.colocarAspersor()})
 
 	//  VISUALES
  	game.addVisualCharacter(personaje)

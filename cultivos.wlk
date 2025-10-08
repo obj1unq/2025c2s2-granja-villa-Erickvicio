@@ -92,3 +92,15 @@ class Tomaco {
 		return 80
 	}
 }
+
+class Aspersor {
+	var property position = game.at(1, 1)
+	
+	method image() {
+		return "aspersor.png"
+	}
+
+	method regar() {
+		
+	}
+}

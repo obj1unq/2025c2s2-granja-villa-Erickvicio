@@ -76,4 +76,17 @@ object personaje {
 
 	method listaDeCocechas() {return listaDeCocechas}
 	method dinero() {return dinero}
+
+	method colocarAspersor() {
+		self.validarColocarAspersor()
+		game.addVisual(new Aspersor(position = self.position()))
+	}
+
+	method validarColocarAspersor() {
+		if(not self.plantaEncima().isEmpty()){
+			self.error("No se puede colocar un aspersor aqui")
+		}
+	}
+
+
 }
