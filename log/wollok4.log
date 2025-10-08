@@ -665,3 +665,4 @@
 {"level":"info","message":"⌛ Building environment","timeElapsed":112,"timestamp":"2025-10-08T15:25:52.398Z"}
 {"level":"info","message":"⌛ Validating extras.wlk","timeElapsed":151,"timestamp":"2025-10-08T15:25:52.550Z"}
 {"level":"info","message":"⌛ Validating cultivos.wlk","timeElapsed":113,"timestamp":"2025-10-08T15:25:52.664Z"}
+{"exitCode":"SIGHUP","level":"info","message":"👾 Game executed game.farmville on /home/publico/Escritorio/2025c2s2-granja-villa-Erickvicio","timeElapsed":171089,"timestamp":"2025-10-08T15:27:24.011Z"}
