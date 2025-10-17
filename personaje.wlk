@@ -60,7 +60,7 @@ object personaje {
 	}
 
 	var property listaDeCosechas = []
-	var  dinero = 0
+	var property dinero = 0
 
 	method venderCosecha() {
 		var cantidadAVender = listaDeCosechas.sum({cosecha => cosecha.valorDeVenta()})
@@ -81,10 +81,9 @@ object personaje {
 			self.error("No hay nada que vender")
 		}
 
-		if(self.entidadEncima().isEmpty()){
-			self.error("No hay un mercado")
-		}else if(self.entidadEncima().first().image() != "market.png"){
-			self.error("No coincide con el nombre de la clase")
+		if(self.entidadEncima().isEmpty() || 
+		self.entidadEncima().first().kindName() != "a Mercado"){
+			self.error("No hay un mercado aqui")
 		}
 	}
 

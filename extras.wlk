@@ -73,4 +73,6 @@ class Mercado {
         game.say(self, "Tenemos "+ mercaderia +" y disponemos de "
 		+ dinero +" para la compra")
     }
+    
+	method esRegada() {}
 }

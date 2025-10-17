@@ -1,10 +1,8 @@
-import personaje.*
+import wollok.game.*
 import game.*
+import personaje.*
 import extras.*
 import cultivos.*
-
-
-
 
 describe "Sembrar" {
     test "Sembrar Maiz" {
@@ -69,12 +67,11 @@ describe "Cosechar" {
         personaje.cosecharPlanta()
         assert.equals(personaje.listaDeCosechas().first().kindName(), "a Maiz")
     }
+
     test "Cosechar trigo " {
         // Trigo etapa 2
         personaje.sembrarSemillaDeTrigo()
-        assert.throwsException({ personaje.cosecharPlanta() }) // Estapa 0
         personaje.regarPlanta()
-        assert.throwsException({ personaje.cosecharPlanta() }) // Estapa 1
         personaje.regarPlanta()
         personaje.cosecharPlanta()
 
@@ -89,15 +86,143 @@ describe "Cosechar" {
 
         assert.equals(personaje.listaDeCosechas().first().kindName(), "a Trigo")
     }
+
+    test "Intentar cosechar trigo en etapas menores a 2" {
+        personaje.sembrarSemillaDeTrigo()
+        assert.throwsException({ personaje.cosecharPlanta() }) // Estapa 0
+        personaje.regarPlanta()
+        assert.throwsException({ personaje.cosecharPlanta() }) // Estapa 1
+    }
+
     test "Cosechar tomaco" {
         personaje.sembrarSemillaDeTomaco()
         personaje.cosecharPlanta()
 
         assert.equals(personaje.listaDeCosechas().first().kindName(), "a Tomaco")
     }
+
     test "Cosechar con ninguna planta encima" {
         assert.throwsException({ personaje.cosecharPlanta() })
     }
+}
 
+describe "Venta" {
+
+    method initialize() { // Personaje en un Mercado para vender
+        personaje.position(game.center())
+        game.addVisual(new Mercado(position = game.center(),
+                                   dinero = 500))
+    }
+
+    test "Vender un maiz" {
+        personaje.listaDeCosechas().add(new Maiz())
+        personaje.venderCosecha()
+        assert.equals(150, personaje.dinero())
+    }
     
+    test "Vender un Trigo en etapa 2" {
+        personaje.listaDeCosechas().add(new Trigo(etapa = 2))
+        personaje.venderCosecha()
+        assert.equals(100, personaje.dinero())
+        assert.that(personaje.listaDeCosechas().isEmpty())
+    }
+
+    test "Vender un Trigo en etapa 3" {
+        personaje.listaDeCosechas().add(new Trigo(etapa = 3))
+        personaje.venderCosecha()
+        assert.equals(200, personaje.dinero())
+        assert.that(personaje.listaDeCosechas().isEmpty())
+    }
+
+    test "Vender tomaco" {
+        personaje.listaDeCosechas().add(new Tomaco())
+        personaje.venderCosecha()
+        assert.equals(80, personaje.dinero())
+        assert.that(personaje.listaDeCosechas().isEmpty())
+    }
+
+    test "Intentar vender nada" {
+        assert.throwsException({ personaje.venderCosecha() }) 
+    }
+}
+
+describe "Aspersores" {
+
+    method initialize() {
+
+        personaje.position(game.at(5,5)) 
+        game.addVisual(new Trigo(position = game.at(5,6)))
+        game.addVisual(new Trigo(position = game.at(5,4)))
+        game.addVisual(new Trigo(position = game.at(4,6)))
+        game.addVisual(new Trigo(position = game.at(4,5)))
+        game.addVisual(new Trigo(position = game.at(4,4)))
+        game.addVisual(new Trigo(position = game.at(6,6)))
+        game.addVisual(new Trigo(position = game.at(6,5)))
+        game.addVisual(new Trigo(position = game.at(6,4)))
+        
+        
+    }
+
+    test "Colocar aspersor" {
+        personaje.colocarAspersor()
+        assert.that(personaje.listaDeAspersores().size() == 1)
+    }
+
+    test "Aspersor riega sus posiciones limitrofes" {
+        personaje.colocarAspersor()
+        personaje.listaDeAspersores().forEach({asp => asp.regarTodo()})
+
+
+        assert.that(game.getObjectsIn(game.at(5,6)).first().etapa() == 1)
+        assert.that(game.getObjectsIn(game.at(5,4)).first().etapa() == 1)
+        assert.that(game.getObjectsIn(game.at(4,6)).first().etapa() == 1)
+        assert.that(game.getObjectsIn(game.at(4,5)).first().etapa() == 1)
+        assert.that(game.getObjectsIn(game.at(4,4)).first().etapa() == 1)
+        assert.that(game.getObjectsIn(game.at(6,6)).first().etapa() == 1)
+        assert.that(game.getObjectsIn(game.at(6,5)).first().etapa() == 1)
+        assert.that(game.getObjectsIn(game.at(6,4)).first().etapa() == 1)
+    }
+}
+
+describe "Varios mercados" {
+
+    test "Vender cosechas" {
+
+        var unMercado = new Mercado(position = game.at(5,5),
+                                    dinero = 330)
+        var cosechas = [
+            new Tomaco(),
+            new Trigo(etapa = 2), 
+            new Maiz()]
+
+        personaje.position(game.at(5,5))
+        personaje.listaDeCosechas().addAll(cosechas)
+        game.addVisual(unMercado)
+        personaje.venderCosecha()
+
+        assert.that(unMercado.mercaderia().size() == 3)
+        assert.equals(0, unMercado.dinero())
+    } 
+    
+
+    test "Intentar vender a mercado sin dinero" {
+        personaje.position(game.at(5,5))
+        personaje.listaDeCosechas().add(new Tomaco())
+        game.addVisual(new Mercado(position = game.at(5,5),
+                                    dinero = 0))
+        assert.throwsException({ personaje.venderCosecha() })
+    }
+
+    test "Intentar vender a mercado sin poseer ninguna cosechas" {
+        personaje.position(game.at(5,5))
+        game.addVisual(new Mercado(position = game.at(5,5),
+                                    dinero = 100))
+        assert.throwsException({ personaje.venderCosecha() })
+    }
+
+    test "Intentar vender sin un mercado" {
+        personaje.position(game.at(5,5))
+        assert.throwsException({ personaje.venderCosecha() })
+    }
+
 }

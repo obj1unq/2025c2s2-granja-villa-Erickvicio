@@ -34,7 +34,7 @@ class Maiz {
 
 class Trigo {
 	var property position = game.at(1, 1)
-	var etapa = 0
+	var property etapa = 0
 	var imagenActual = "wheat_0.png" 
 	method image() {
 
@@ -77,6 +77,13 @@ class Tomaco {
 	}
 
 	method esRegada() {
+		if(game.getObjectsIn(position.up(1)).isEmpty()){
+			self.avanzar()
+		}
+
+	}
+
+	method avanzar() {
 		if(position.y() < game.height() - 1 ){
 		position = position.up(1)
 		}else{
@@ -119,5 +126,7 @@ class Aspersor {
 	method regarTodo() {
 		dir.forEach({unaDir => self.regar(unaDir)})
 	}
+
+	method esRegada() {}
 
 }
